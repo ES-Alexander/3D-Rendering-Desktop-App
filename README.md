@@ -8,11 +8,13 @@
 
 ## Description
 
-This project was made as a practice for Python programming, Matrix maniulation, file processing, and general system engineering processes.
+This project was made as a practice for Python programming, matricies manipulation, file processing, and general system engineering processes.
 
 Also it was a way for me to explore an interesting field for me which is graphics (2D, and 3D).
 
-It's a desktop app that takes in waveform files (.OBJ) and visualizes its triangulated form (no filliing, no shading, no texturing! just triangles)
+It's a desktop app that takes in waveform files (.OBJ) and visualizes its triangulated form (no filliing, no shading, no texturing! just triangles) and then 
+
+allows the user to rotate the model in the X, Y, and Z directions.
 
 ### Key Words
 
@@ -30,9 +32,11 @@ This article assumes having basic knowledge of Python, Tkinter, and Numpy, since
 
 ## Waveform files (.OBJ)
 
-I recommend reading this [article in Wikipedia](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
+I recommend reading this [article in Wikipedia](https://en.wikipedia.org/wiki/Wavefront_.obj_file) in case you want to know more about the structure of these 
 
-Or if you're not into reading, watch this [YouTube video](https://www.youtube.com/watch?v=KMWUjNE0fYI)
+files.
+
+Or if you're not into reading, watch this [YouTube video](https://www.youtube.com/watch?v=KMWUjNE0fYI) that provides a good enough explanation.
 
 ---
 
@@ -46,9 +50,9 @@ You'll have to have these libraries along with Python in your PC:
 
 - Tkinter (if you're running Linux, you'll have to install it, otherwise, it comes with Python when installed)
 
-- The 3 files provided in this repo located in the same folder.
+- The 3 files provided in this repo located in the same folder. (main.py, geometry_set.py, obj_files_handler.py)
 
-- pyscreenshot (Only if you're running Linux, otherwise, you can use ImageGrab from the PIL lib)
+- pyscreenshot (Only if you're running Linux, otherwise, you can import ImageGrab directly from PIL)
 
 ### Manipulation
 
@@ -72,11 +76,11 @@ provided in the /Objects folder.
 ## References
 
 
-- Inspiration for this project: [Youtube Vid](https://www.youtube.com/watch?v=Scn96t7mwC4)
+- Inspiration for this project: [YouTube video](https://www.youtube.com/watch?v=Scn96t7mwC4).
 
-- Some of my code was based on this work: [Youtube Vid](https://www.youtube.com/watch?v=sSQIwIx8uT4)
+- Some of my code was based on this work: [YouTube video](https://www.youtube.com/watch?v=sSQIwIx8uT4).
 
-- Best explanation of linear algebra ever: [Youtube Playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
+- Best explanation of linear algebra ever: [YouTube playlist](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab).
 
 - Get free waveform files online: [Link](https://www.turbosquid.com/Search/3D-Models/free/obj)
 
