@@ -13,10 +13,16 @@ directory.
 
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
+import numpy as np
 import gc
 
 from PIL import Image
-import pyscreenshot as ImageGrab
+
+from sys import platform
+if platform.startswith('linux'):
+        import pyscreenshot as ImageGrab
+else:
+        from PIL import ImageGrab
 
 import geometry_set
 import obj_files_handler
@@ -40,14 +46,14 @@ angle_z = 0.0
 
 #This dict will store the verticies along with their order in the .obj file
 #since we'll need the order when drawing the faces
-Verticies = {}
+vertices = np.array([[0]]*3) # start out with just a single point at [0,0,0]
 
 #This list will be populated with the lists of indexes of the verticies that
 #shall be connected to form a face (Face[[v1, v65, v2], [], ...)
-Faces = []
+Faces = np.array([])
 
 def ReadFile():
-	global Verticies
+	global vertices
 	global Faces
 
 	#Graphical window warns about the kind of compatible files
@@ -66,7 +72,7 @@ def ReadFile():
 		FILE_NAME.set(file_path.split('/')[-1])
 		ResetRotation()
 		with open(file_path) as file:
-			Verticies, Faces = obj_files_handler.ExtractData(file)
+			vertices, Faces = obj_files_handler.ExtractData(file)
 
 def MoveUp(*args):
 	geometry_set.UpdatePosition(0, -1*MOVING_STEP)
@@ -126,7 +132,7 @@ def Update():
 	#Delete all the previous points and lines in order to draw new ones
 	canvas.delete("all")
 	canvas = geometry_set.DrawObject(canvas,
-									 Verticies,
+									 vertices,
 									 Faces,
 									 angle_x,
 									 angle_y,

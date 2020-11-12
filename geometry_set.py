@@ -29,88 +29,52 @@ def UpdatePosition(x, y):
     OBJECT_POSITION[0] += x
     OBJECT_POSITION[1] += y
 
-
-def DrawLine (i, j, points, canvas):
-    point_01 = points[i]
-    point_02 = points[j]
-    canvas.create_line(point_01[0], point_01[1],
-                       point_02[0], point_02[1],
-                       fill = LINE_COLOR)
-    return canvas
+def DrawFace(face, points, canvas):
+    ''' Draw a specified face. '''
+    draw_points = []
+    for index in face:
+        draw_points.extend(points[index-1])
+    canvas.create_polygon(draw_points, outline=LINE_COLOR, fill='')
 
 def DrawPoint(point, canvas):
-    canvas.create_oval(point[0], point[1],
-                       point[0], point[1],
-                       width = POINT_SIZE,
-                       fill = POINT_COLOR)
-    return canvas
+    canvas.create_line(*point, *point, width=POINT_SIZE, fill=POINT_COLOR)
 
-def TransformPoint(point, angle_x, angle_y, angle_z, zoom):
-
+def RotationMatrix(angle_x, angle_y, angle_z):
     #These are the rotation matricies that will transform the point position
     #according to the desired rotation (Check some linear algebra course
     #if you wanna know more about em, otherwise, there's no huge need
     #to understand exactly how they work)
-    rotation_x = [[1, 0, 0],
-                  [0, math.cos(angle_x), -math.sin(angle_x)],
-                  [0, math.sin(angle_x), math.cos(angle_x)]]
+    rot_x = np.array([[1, 0, 0],
+                      [0, math.cos(angle_x), -math.sin(angle_x)],
+                      [0, math.sin(angle_x), math.cos(angle_x)]])
 
-    rotation_y = [[math.cos(angle_y), 0, -math.sin(angle_y)],
-                  [0, 1, 0],
-                  [math.sin(angle_y), 0, math.cos(angle_y)]]
+    rot_y = np.array([[math.cos(angle_y), 0, -math.sin(angle_y)],
+                      [0, 1, 0],
+                      [math.sin(angle_y), 0, math.cos(angle_y)]])
 
-    rotation_z = [[math.cos(angle_z), -math.sin(angle_z), 0],
-                  [math.sin(angle_z), math.cos(angle_z), 0],
-                  [0, 0 ,1]]
-
-    #Here we rotate our point in the Y, X, and Z axis respectively
-    rotated_2d = np.matmul(rotation_y, point)
-    rotated_2d = np.matmul(rotation_x, rotated_2d)
-    rotated_2d = np.matmul(rotation_z, rotated_2d)
-
-    #Projection matricies are also a tool in linear algebra that allow us
-    #to project "3D" objects on 2D screens and still precieve them as "3D"
-    z = 1/(zoom - rotated_2d[2][0])
-    projection_matrix = [[z, 0, 0],
-                        [0, z, 0]]
-    projected_2d = np.matmul(projection_matrix, rotated_2d)
-    x = int(projected_2d[0][0] * OBJECT_SCALE) + OBJECT_POSITION[0]
-    #The (-) sign in the Y is because the canvas' Y axis starts
-    #from Top to Bottom, so without the (-) sign, our objects
-    #would be presented upside down
-    y = -int(projected_2d[1][0] * OBJECT_SCALE) + OBJECT_POSITION[1]
-
-    return x, y
+    rot_z = np.array([[math.cos(angle_z), -math.sin(angle_z), 0],
+                      [math.sin(angle_z), math.cos(angle_z), 0],
+                      [0, 0 ,1]])
+    return rot_z @ rot_x @ rot_y
 
 #This function is the one that orchestrates all the actions.
 #First is transforms the points, draws them, then draws the lines
 #according to the faces list
-def DrawObject(canvas, Verticies, Faces, angle_x, angle_y, angle_z, zoom):
-    projected_points = {}
-    for i in range(len(Verticies)):
-        x, y = TransformPoint(Verticies[i+1],
-                              angle_x,
-                              angle_y,
-                              angle_z,
-                              zoom)
-        projected_points[i+1] = [x, y]
-        canvas = DrawPoint((x, y), canvas)
+def DrawObject(canvas, vertices, Faces, angle_x, angle_y, angle_z, zoom):
+    projected_points = []
+    # only calculate this once, since it's the same for all the points
+    rotation = RotationMatrix(angle_x, angle_y, angle_z)
+    # vectorised matrix arithmetic - do them all at once
+    rotated = rotation @ vertices
+    point_scales = OBJECT_SCALE / (zoom - rotated[2])
 
-    #Faces could be presented with more than 3 verticies, but for now,
-    #we're only drawing triangles and ignoring the rest
+    projected_points = (rotated[:2] * [[1],[-1]] * point_scales).T \
+        + OBJECT_POSITION
+    for point in projected_points:
+        DrawPoint(point, canvas)
+
     for face in Faces:
-            canvas = DrawLine(face[0],
-                              face[1],
-                              projected_points,
-                              canvas)
-            canvas = DrawLine(face[1],
-                              face[2],
-                              projected_points,
-                              canvas)
-            canvas = DrawLine(face[2],
-                              face[0],
-                              projected_points,
-                              canvas)
+        DrawFace(face, projected_points, canvas)
     return canvas
 
 if __name__ == '__main__':
