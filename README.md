@@ -101,3 +101,12 @@ provided in the /Objects folder.
 ## Author info
 
 [Linkedin](https://www.linkedin.com/in/radhi-sghaier/)
+
+## Modifications
+
+ES-Alexander:
+- make better use of numpy's vectorisation to transform and project all points in an object
+- reuse calculation results (e.g. rotation matrix) instead of recalculating per point
+- simplify drawing functions with better use of tkinter functions
+- minor structural cleanup for improved readability
+- TODO: refactor program to be class-based and simplified
