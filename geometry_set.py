@@ -4,9 +4,8 @@
 ### Dependencies ###
 ####################
 
-import math
-import gc
 import numpy as np
+from collections import namedtuple
 
 ########################
 ### Global variables ###
@@ -22,6 +21,7 @@ CANVAS_HEIGHT = 560
 OBJECT_POSITION = [CANVAS_WIDTH//2, CANVAS_HEIGHT-20]
 OBJECT_SCALE = 2500
 
+Angle = namedtuple('Angle', 'x y z')
 
 def UpdatePosition(x, y):
     global OBJECT_POSITION
@@ -39,29 +39,33 @@ def DrawFace(face, points, canvas):
 def DrawPoint(point, canvas):
     canvas.create_line(*point, *point, width=POINT_SIZE, fill=POINT_COLOR)
 
-def RotationMatrix(angle_x, angle_y, angle_z):
+def RotationMatrix(*angles_xyz):
     #These are the rotation matricies that will transform the point position
     #according to the desired rotation (Check some linear algebra course
     #if you wanna know more about em, otherwise, there's no huge need
     #to understand exactly how they work)
-    rot_x = np.array([[1, 0, 0],
-                      [0, math.cos(angle_x), -math.sin(angle_x)],
-                      [0, math.sin(angle_x), math.cos(angle_x)]])
 
-    rot_y = np.array([[math.cos(angle_y), 0, -math.sin(angle_y)],
-                      [0, 1, 0],
-                      [math.sin(angle_y), 0, math.cos(angle_y)]])
+    cos = Angle(*(np.cos(angle) for angle in angles_xyz))
+    sin = Angle(*(np.sin(angle) for angle in angles_xyz))
 
-    rot_z = np.array([[math.cos(angle_z), -math.sin(angle_z), 0],
-                      [math.sin(angle_z), math.cos(angle_z), 0],
-                      [0, 0 ,1]])
+    rot_x = np.array([[1, 0    , 0     ],
+                      [0, cos.x, -sin.x],
+                      [0, sin.x, cos.x ]])
+
+    rot_y = np.array([[cos.y, 0, -sin.y],
+                      [0    , 1, 0     ],
+                      [sin.y, 0, cos.y ]])
+
+    rot_z = np.array([[cos.z, -sin.z, 0],
+                      [sin.z, cos.z , 0],
+                      [0    , 0     , 1]])
+
     return rot_z @ rot_x @ rot_y
 
 #This function is the one that orchestrates all the actions.
 #First is transforms the points, draws them, then draws the lines
 #according to the faces list
 def DrawObject(canvas, vertices, Faces, angle_x, angle_y, angle_z, zoom):
-    projected_points = []
     # only calculate this once, since it's the same for all the points
     rotation = RotationMatrix(angle_x, angle_y, angle_z)
     # vectorised matrix arithmetic - do them all at once
@@ -69,7 +73,7 @@ def DrawObject(canvas, vertices, Faces, angle_x, angle_y, angle_z, zoom):
     point_scales = OBJECT_SCALE / (zoom - rotated[2])
 
     projected_points = (rotated[:2] * [[1],[-1]] * point_scales).T \
-        + OBJECT_POSITION
+                      + OBJECT_POSITION
     for point in projected_points:
         DrawPoint(point, canvas)
 
