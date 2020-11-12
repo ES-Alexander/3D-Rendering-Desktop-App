@@ -73,6 +73,18 @@ provided in the /Objects folder.
 
 ---
 
+## Possible improvements
+
+ - Migrate this code into an OOP (Object Oriented Programming) approach and ditch the use of global variables.
+
+ - In the current approach, I'm drawing the triangles line by line by calling the DrawLine() function 3 times. This chould be improved by making a DrawTriangle() function that draws one triangle at the time.
+ 
+ - Test more files and study more waveform files in order to be sure that this app will read any waveform file (I didn't do much testing).
+  
+ - Add the filling, shading, and textures to the objects.
+
+---
+
 ## References
 
 
