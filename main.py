@@ -131,12 +131,8 @@ def Update():
 
 	#Delete all the previous points and lines in order to draw new ones
 	canvas.delete("all")
-	canvas = geometry_set.DrawObject(canvas,
-									 vertices,
-									 Faces,
-									 angle_x,
-									 angle_y,
-									 angle_z,
+	canvas = geometry_set.DrawObject(canvas, vertices, Faces,
+									 (angle_x, angle_y, angle_z),
 									 zoom)
 
 	#This line calls the Update function every 2 milliseconds

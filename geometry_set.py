@@ -39,7 +39,7 @@ def DrawFace(face, points, canvas):
 def DrawPoint(point, canvas):
     canvas.create_line(*point, *point, width=POINT_SIZE, fill=POINT_COLOR)
 
-def RotationMatrix(*angles_xyz):
+def RotationMatrix(angles_xyz):
     #These are the rotation matricies that will transform the point position
     #according to the desired rotation (Check some linear algebra course
     #if you wanna know more about em, otherwise, there's no huge need
@@ -65,9 +65,9 @@ def RotationMatrix(*angles_xyz):
 #This function is the one that orchestrates all the actions.
 #First is transforms the points, draws them, then draws the lines
 #according to the faces list
-def DrawObject(canvas, vertices, Faces, angle_x, angle_y, angle_z, zoom):
+def DrawObject(canvas, vertices, Faces, angles_xyz, zoom):
     # only calculate this once, since it's the same for all the points
-    rotation = RotationMatrix(angle_x, angle_y, angle_z)
+    rotation = RotationMatrix(angles_xyz)
     # vectorised matrix arithmetic - do them all at once
     rotated = rotation @ vertices
     point_scales = OBJECT_SCALE / (zoom - rotated[2])
