@@ -105,9 +105,11 @@ class View(tk.Tk):
                                              ('<Left>' , self._left , 1, 0),
                                              ('<Right>', self._right, 1, 2),
                                              ('<Down>' , self._down , 2, 1)):
-            ttk.Button(frame, text=direction[1], command=binding)\
+            text = direction[1]
+            ttk.Button(frame, text=text, command=binding)\
                .grid(row=row, column=col)
             self.bind(direction, binding)
+            self.bind(text, binding)
 
     def _create_load_controls(self):
         ''' Create a button and display widget for loading a file. '''
