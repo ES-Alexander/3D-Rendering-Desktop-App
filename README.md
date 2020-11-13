@@ -56,7 +56,7 @@ You'll have to have these libraries along with Python in your PC:
 
 ### Manipulation
 
-- Run the main.py file
+- Run the ~main.py~ `Controller.py` file
 
 - This interface will open:
 
@@ -75,7 +75,7 @@ provided in the /Objects folder.
 
 ## Possible improvements
 
- - Migrate this code into an OOP (Object Oriented Programming) approach and ditch the use of global variables.
+ - ~Migrate this code into an OOP (Object Oriented Programming) approach and ditch the use of global variables.~
 
  - ~In the current approach, I'm drawing the triangles line by line by calling the DrawLine() function 3 times. This chould be improved by making a DrawTriangle() function that draws one triangle at the time.~
  
@@ -109,4 +109,5 @@ ES-Alexander:
 - reuse calculation results (e.g. rotation matrix) instead of recalculating per point
 - simplify drawing functions with better use of tkinter functions (e.g. `create_polygon`)
 - minor structural cleanup for improved readability
-- TODO: refactor program to be class-based and simplified
+- refactored program to be class-based and simplified, using Model-View-Controller paradigm
+- added a checkbutton for spin, so rotation can be manual if desired
