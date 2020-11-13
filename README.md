@@ -77,9 +77,9 @@ provided in the /Objects folder.
 
  - Migrate this code into an OOP (Object Oriented Programming) approach and ditch the use of global variables.
 
- - In the current approach, I'm drawing the triangles line by line by calling the DrawLine() function 3 times. This chould be improved by making a DrawTriangle() function that draws one triangle at the time.
+ - ~In the current approach, I'm drawing the triangles line by line by calling the DrawLine() function 3 times. This chould be improved by making a DrawTriangle() function that draws one triangle at the time.~
  
- - Test more files and study more waveform files in order to be sure that this app will read any waveform file (I didn't do much testing).
+ - ~Test more files and study more waveform files in order to be sure that this app will read any waveform file (I didn't do much testing).~
   
  - Add the filling, shading, and textures to the objects.
 
@@ -107,6 +107,6 @@ provided in the /Objects folder.
 ES-Alexander:
 - make better use of numpy's vectorisation to transform and project all points in an object
 - reuse calculation results (e.g. rotation matrix) instead of recalculating per point
-- simplify drawing functions with better use of tkinter functions
+- simplify drawing functions with better use of tkinter functions (e.g. `create_polygon`)
 - minor structural cleanup for improved readability
 - TODO: refactor program to be class-based and simplified
